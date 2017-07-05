@@ -44,7 +44,7 @@ public class Index {
 
     }
 
-    public static java.math.BigDecimal ODCIIndexAlter(oracle.ODCI.ODCIIndexInfo info, java.lang.String params, int alter_options,
+    public static java.math.BigDecimal ODCIIndexAlter(oracle.ODCI.ODCIIndexInfo info, java.lang.String params, java.math.BigDecimal alter_options,
                                      oracle.ODCI.ODCIEnv env) {
 
         java.util.Map<String, String> params_map = new HashMap<String, String>();
@@ -151,8 +151,7 @@ public class Index {
                 parsed_results.subList(0, end_index);
             }
 
-
-            int ctxkey = ContextManager.setContext(parsed_results);
+            ContextManager.setContext(parsed_results);
         }
         catch(Exception e){
             Utils.print_log(e.getMessage());
@@ -162,7 +161,7 @@ public class Index {
         return SUCCESS;
     }
 
-    public static java.math.BigDecimal ODCIIndexFetch(oracle.ODCI.ODCIIndexCtx self, int nrows, oracle.ODCI.ODCIRidList rids, oracle.ODCI.ODCIEnv env) {
+    public static java.math.BigDecimal ODCIIndexFetch(oracle.ODCI.ODCIIndexCtx self, java.math.BigDecimal nrows, oracle.ODCI.ODCIRidList rids, oracle.ODCI.ODCIEnv env) {
         try{
             Integer ctxkey = (Integer) ContextManager.ctx.keySet().toArray()[0];
             LinkedList<Image_Sim> results = (LinkedList<Image_Sim>) ContextManager.getContext(ctxkey);
@@ -170,7 +169,7 @@ public class Index {
             HashMap<java.lang.String, java.lang.String> filename_id = Utils.request_id();
             String[] rowids = new String[nrows + 1];
 
-            for(int i = 0; i<nrows; i++){
+            for(int i = 0; i< nrows.intValue(); i++){
                 rowids[i] = filename_id.get(results.get(i).image);
             }
 
