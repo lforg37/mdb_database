@@ -1,27 +1,30 @@
-CREATE TYPE Image_index_methods AS OBJECT
+DROP Type Image_index;
+
+CREATE TYPE Image_Index AS OBJECT
 (
+clxID INTEGER,
 
 STATIC FUNCTION  ODCIIndexCreate(ia ODCIIndexInfo,
 parms VARCHAR2,
 env ODCIEnv) 
 RETURN NUMBER
 AS LANGUAGE JAVA 
-NAME 'Index.ODCIIndexCreate(ODCIIndexInfo, java.lang.String, ODCIEnv) return java.math.BigDecimal',
+NAME 'Index.ODCIIndexCreate(oracle.ODCI.ODCIIndexInfo, java.lang.String, oracle.ODCI.ODCIEnv) return java.math.BigDecimal',
 
 
 STATIC FUNCTION  ODCIIndexAlter(ia ODCIIndexInfo,
-parms IN OUT VARCHAR2,
+parms VARCHAR2,
 alter_option NUMBER,
 env ODCIEnv)
 RETURN NUMBER
 AS LANGUAGE JAVA 
-NAME 'Index.ODCIIndexAlter(ODCIIndexInfo, java.lang.String, java.math.BigDecimal, ODCIEnv) return java.math.BigDecimal',
+NAME 'Index.ODCIIndexAlter(oracle.ODCI.ODCIIndexInfo, java.lang.String, java.math.BigDecimal, oracle.ODCI.ODCIEnv) return java.math.BigDecimal',
 
 STATIC FUNCTION  ODCIIndexDrop(ia ODCIIndexInfo,
 env ODCIEnv)
 RETURN NUMBER
 AS LANGUAGE JAVA 
-NAME 'Index.ODCIIndexDrop(DCIIndexInfo, ODCIEnv) return java.math.BigDecimal',
+NAME 'Index.ODCIIndexDrop(oracle.ODCI.ODCIIndexInfo, oracle.ODCI.ODCIEnv) return java.math.BigDecimal',
 
 STATIC FUNCTION  ODCIIndexInsert(ia ODCIIndexInfo,
 ridlist VARCHAR2,
@@ -29,7 +32,7 @@ newvallist VARCHAR2,
 env ODCIEnv)
 RETURN NUMBER
 AS LANGUAGE JAVA 
-NAME 'Index.ODCIIndexInsert(ODCIIndexInfo, java.lang.String, java.lang.String, ODCIEnv) return java.math.BigDecimal',
+NAME 'Index.ODCIIndexInsert(oracle.ODCI.ODCIIndexInfo, java.lang.String, java.lang.String, oracle.ODCI.ODCIEnv) return java.math.BigDecimal',
 
 STATIC FUNCTION  ODCIIndexDelete(ia ODCIIndexInfo,
 rid VARCHAR2,
@@ -37,7 +40,7 @@ oldval VARCHAR2,
 env ODCIEnv)
 RETURN NUMBER
 AS LANGUAGE JAVA 
-NAME 'Index.ODCIIndexDelete(ODCIIndexInfo , java.lang.String , java.lang.String, ODCIEnv) return java.math.BigDecimal',
+NAME 'Index.ODCIIndexDelete(oracle.ODCI.ODCIIndexInfo , java.lang.String , java.lang.String, oracle.ODCI.ODCIEnv) return java.math.BigDecimal',
 
 STATIC FUNCTION  ODCIIndexUpdate(ia ODCIIndexInfo,
 rid VARCHAR2,
@@ -46,9 +49,9 @@ newval VARCHAR2,
 env ODCIEnv)
 RETURN NUMBER
 AS LANGUAGE JAVA 
-NAME 'Index.ODCIIndexUpdate(ODCIIndexInfo, java.lang.String, java.lang.String,  java.lang.String, ODCIEnv) return java.math.BigDecimal',
+NAME 'Index.ODCIIndexUpdate(oracle.ODCI.ODCIIndexInfo, java.lang.String, java.lang.String,  java.lang.String, oracle.ODCI.ODCIEnv) return java.math.BigDecimal',
 
-STATIC FUNCTION  ODCIIndexStart(sctx IN OUT ODCIIndexCtx,
+STATIC FUNCTION  ODCIIndexStart(sctx ODCIIndexCtx,
 ia ODCIIndexInfo,
 pi ODCIPredInfo,
 qi ODCIQueryInfo,
@@ -58,21 +61,21 @@ valargs VARCHAR2,
 env ODCIEnv)
 RETURN NUMBER
 AS LANGUAGE JAVA 
-NAME 'Index.ODCIIndexInsert(ODCIIndexCtx, ODCIIndexInfo, ODCIPredInfo, ODCIQueryInfo, java.math.BigDecimal, java.math.BigDecimal, java.lang.String, ODCIEnv) return java.math.BigDecimal',
+NAME 'Index.ODCIIndexStart(oracle.ODCI.ODCIIndexCtx, oracle.ODCI.ODCIIndexInfo, oracle.ODCI.ODCIPredInfo, oracle.ODCI.ODCIQueryInfo, java.math.BigDecimal, java.math.BigDecimal, java.lang.String, oracle.ODCI.ODCIEnv) return java.math.BigDecimal',
 
-MEMBER FUNCTION  ODCIIndexFetch(self IN OUT impltype,
-nrows IN NUMBER,
-rids OUT ODCIRidList,
+MEMBER FUNCTION  ODCIIndexFetch(sctx ODCIIndexCtx,
+nrows NUMBER,
+rids ODCIRidList,
 env ODCIEnv)
 RETURN NUMBER
 AS LANGUAGE JAVA 
-NAME 'Index.ODCIIndexDelete(ODCIIndexCtx, java.math.BigDecimal, ODCIRidList, ODCIEnv) return java.math.BigDecimal',
+NAME 'Index.ODCIIndexFetch(oracle.ODCI.ODCIIndexCtx, java.math.BigDecimal, oracle.ODCI.ODCIRidList, oracle.ODCI.ODCIEnv) return java.math.BigDecimal',
 
-MEMBER FUNCTION  ODCIIndexClose(self IN impltype,
+MEMBER FUNCTION  ODCIIndexClose(sctx ODCIIndexCtx,
 env ODCIEnv)
 RETURN NUMBER
 AS LANGUAGE JAVA 
-NAME 'Index.ODCIIndexUpdate(ODCIIndexCtx, ODCIEnv) return java.math.BigDecimal'
+NAME 'Index.ODCIIndexClose(oracle.ODCI.ODCIIndexCtx, oracle.ODCI.ODCIEnv) return java.math.BigDecimal'
 );
 /
 
@@ -81,4 +84,3 @@ NAME 'Index.ODCIIndexUpdate(ODCIIndexCtx, ODCIEnv) return java.math.BigDecimal'
 --);
 --/
 
-DROP INDEXTYPE Image_index;

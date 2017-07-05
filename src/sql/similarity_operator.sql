@@ -1,18 +1,25 @@
-CREATE OR REPLACE FUNCTION user_mmdb.Similarity (image1 VARCHAR2, images2 VARCHAR2, ctx IN SYS.ODCIINDEXCTX) RETURN NUMBER AS
+CREATE OR REPLACE FUNCTION Similarity (image1 IN VARCHAR2, 
+	images2 IN  VARCHAR2, 
+	ctx IN SYS.ODCIINDEXCTX, 
+	sctx IN OUT IMAGE_INDEX, 
+	scanflg IN NUMBER
+	) RETURN NUMBER AS
 LANGUAGE JAVA
-NAME 'Similarity.similarity (java.lang.String, java.lang.String, oracle.ODCI.ODCIIndexCtx) return java.math.BigDecimal';
+NAME 'Similarity.similarity (java.lang.String, java.lang.String, oracle.ODCI.ODCIIndexCtx, Index[], java.math.BigDecimal) return java.math.BigDecimal';
 /
 
-DROP OPERATOR similarity;
+DROP OPERATOR similarityoperator;
 
-CREATE OR REPLACE OPERATOR similarity 
+CREATE OR REPLACE OPERATOR similarityoperator
 BINDING (VARCHAR2, VARCHAR2) RETURN NUMBER 
 WITH INDEX CONTEXT, SCAN CONTEXT Image_index
-USING user_mmdb.Similarity;
+USING Similarity;
 /
 
-CREATE OR REPLACE INDEXTYPE Image_index
-FOR similarity (VARCHAR2, VARCHAR2)
-USING Image_index_methods
+DROP INDEXTYPE Image_index_type;
+
+CREATE OR REPLACE INDEXTYPE Image_index_type
+FOR similarityoperator (VARCHAR2, VARCHAR2)
+USING Image_index
 WITH SYSTEM MANAGED STORAGE TABLES;
 /

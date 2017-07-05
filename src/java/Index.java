@@ -167,7 +167,7 @@ public class Index {
             LinkedList<Image_Sim> results = (LinkedList<Image_Sim>) ContextManager.getContext(ctxkey);
 
             HashMap<java.lang.String, java.lang.String> filename_id = Utils.request_id();
-            String[] rowids = new String[nrows + 1];
+            String[] rowids = new String[nrows.intValue() + 1];
 
             for(int i = 0; i< nrows.intValue(); i++){
                 rowids[i] = filename_id.get(results.get(i).image);
