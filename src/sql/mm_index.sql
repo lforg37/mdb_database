@@ -4,6 +4,8 @@ CREATE TYPE Image_Index AS OBJECT
 (
 clxID INTEGER,
 
+STATIC FUNCTION ODCIGETINTERFACES(ifclist OUT SYS.ODCIOBJECTLIST) RETURN NUMBER, 
+
 STATIC FUNCTION  ODCIIndexCreate(ia ODCIIndexInfo,
 parms VARCHAR2,
 env ODCIEnv) 
@@ -79,8 +81,13 @@ NAME 'Index.ODCIIndexClose(oracle.ODCI.ODCIIndexCtx, oracle.ODCI.ODCIEnv) return
 );
 /
 
---CREATE TYPE BODY Image_index_methods
---(
---);
---/
-
+CREATE OR REPLACE TYPE BODY Image_index IS
+STATIC FUNCTION ODCIGetInterfaces
+  (ifclist OUT NOCOPY SYS.ODCIOBJECTLIST)
+  RETURN NUMBER IS
+  BEGIN
+  ifclist := sys.ODCIObjectList(sys.ODCIObject('SYS','ODCIINDEX2'));
+  RETURN SYS.ODCICONST.SUCCESS;
+  END ODCIGetInterfaces;
+END;
+\
