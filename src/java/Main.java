@@ -15,7 +15,7 @@ public class Main {
         //Index.ODCIIndexStart(new ODCIIndexCtx(), new ODCIIndexInfo(), new ODCIPredInfo(), new ODCIQueryInfo(),
          //       0, 0, "/home/OMD/CorelDB/sc_indoor/457079.jpg", 5, new ODCIEnv());
 
-        HashMap<String, String> test = new HashMap<>();
+        HashMap<String, String> test = new HashMap<String, String>();
         test.put("test1", "val1");
         test.put("test2", "val2");
 
