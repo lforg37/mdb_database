@@ -31,12 +31,22 @@ start_db() {
 		pro Starting with pfile='$pfile' ...
 		startup;
 		alter system register;
-		@/scripts/sql/clean.sql
-		@/scripts/sql/fill_database.sql
-		@/scripts/sql/similarity_operator
-		@/scripts/sql/mm_index.sql
 		exit 0
 	EOF
+	until sqlplus /nolog @/scripts/sql/waitoracle.sql 
+	do
+		echo "DB not ready, waiting another 5 seconds"
+		sleep 5;
+	done
+	
+	sqlplus sys/oracle@oramdb as sysdba @/scripts/sql/clean.sql
+	sqlplus sys/oracle@oramdb as sysdba @/scripts/sql/fill_database.sql
+	
+	$ORACLE_HOME/bin/loadjava -user user_mmdb/user_mmdb@oramdb -verbose -force -resolve /app/java/build/*.class
+
+#	sqlplus sys/oracle@oramdb as sysdba @/scripts/sql/similarity_operator.sql
+#	sqlplus sys/oracle@oramdb as sysdba @/scripts/sql/mm_index.sql
+
 	while read line; do echo -e "sqlplus: $line"; done
 	wait $MON_ALERT_PID
 }
