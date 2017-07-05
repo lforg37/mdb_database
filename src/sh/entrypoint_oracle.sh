@@ -44,8 +44,8 @@ start_db() {
 	
 	$ORACLE_HOME/bin/loadjava -user user_mmdb/user_mmdb@oramdb -verbose -force -resolve /app/java/build/*.class
 
-#	sqlplus sys/oracle@oramdb as sysdba @/scripts/sql/similarity_operator.sql
-#	sqlplus sys/oracle@oramdb as sysdba @/scripts/sql/mm_index.sql
+	sqlplus sys/oracle@oramdb as sysdba @/scripts/sql/mm_index.sql
+	sqlplus sys/oracle@oramdb as sysdba @/scripts/sql/similarity_operator.sql
 
 	while read line; do echo -e "sqlplus: $line"; done
 	wait $MON_ALERT_PID
