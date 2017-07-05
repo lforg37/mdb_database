@@ -31,7 +31,10 @@ start_db() {
 		pro Starting with pfile='$pfile' ...
 		startup;
 		alter system register;
-		@/scripts/sql/createUser.sql
+		@/scripts/sql/clean.sql
+		@/scripts/sql/fill_database.sql
+		@/scripts/sql/similarity_operator
+		@/scripts/sql/mm_index.sql
 		exit 0
 	EOF
 	while read line; do echo -e "sqlplus: $line"; done
