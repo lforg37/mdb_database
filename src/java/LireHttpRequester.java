@@ -17,6 +17,7 @@ public class LireHttpRequester {
     static private final int INSERT = 13;
     static private final int UPDATE = 14;
     static private final int SIM = 15;
+    static private final int COMPARE = 16;
 
     private java.lang.String server_address;
 
