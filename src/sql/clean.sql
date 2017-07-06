@@ -1,3 +1,4 @@
+DROP INDEX Images_Table_Index;
 DROP OPERATOR similarity;
 DROP INDEXTYPE Image_index;
 DROP DIRECTORY OMD;
