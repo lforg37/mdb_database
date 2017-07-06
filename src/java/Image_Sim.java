@@ -14,6 +14,7 @@ public class Image_Sim implements Comparable{
         this.sim = sim;
     }
 
+    @Override
     public int compareTo(Object obj){
         Image_Sim o = (Image_Sim) obj;
         if(this.sim.compareTo(o.sim)==-1) return -1;

@@ -15,14 +15,7 @@ public class Main {
         //Index.ODCIIndexStart(new ODCIIndexCtx(), new ODCIIndexInfo(), new ODCIPredInfo(), new ODCIQueryInfo(),
          //       0, 0, "/home/OMD/CorelDB/sc_indoor/457079.jpg", 5, new ODCIEnv());
 
-        HashMap<String, String> test = new HashMap<String, String>();
-        test.put("test1", "val1");
-        test.put("test2", "val2");
-
-        for(Iterator<Map.Entry<String, String>> it = test.entrySet().iterator(); it.hasNext(); ){
-            Map.Entry<java.lang.String,String> entry = it.next();
-            if(entry.getValue().equals("val1")) it.remove();
-        }
+        HashMap<String, String> test = Utils.request_id();
 
         for(String key : test.keySet()){
             System.out.println(test.get(key));
