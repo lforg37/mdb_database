@@ -47,10 +47,14 @@ start_db() {
 	sqlplus sys/oracle@oramdb as sysdba @/scripts/sql/fill_database.sql
 	
 	echo "LOADING JAVA CLASSES"
-	$ORACLE_HOME/bin/loadjava -user user_mmdb/user_mmdb@oramdb -verbose -force -resolve /app/java/build/*.class
+	$ORACLE_HOME/bin/loadjava -user SYS/oracle@oramdb -verbose -force -resolve /app/java/build/*.class
 
 	echo "Creating index structs..."
 	sqlplus sys/oracle@oramdb as sysdba @/scripts/sql/mm_index.sql
+	
+	echo "WAITING FOR THE LIRE API TO WAKE UP..."
+	sleep 10
+
 	echo "Creating similarity op..."
 	sqlplus sys/oracle@oramdb as sysdba @/scripts/sql/similarity_operator.sql
 
