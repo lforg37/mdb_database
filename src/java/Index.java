@@ -12,12 +12,12 @@ import java.math.BigDecimal;
 
 public class Index {
 
-    static private LireHttpRequester requester = new LireHttpRequester("http://huile-de-palme.ml:8080/");
-    //static private LireHttpRequester requester = new LireHttpRequester("http://lireserv:8080/");
-    static private java.lang.String images_path = "/home/OMD/CorelDB";
+    //static private LireHttpRequester requester = new LireHttpRequester("http://huile-de-palme.ml:8080/");
+    static private LireHttpRequester requester = new LireHttpRequester("http://lireserv:8080/");
+    static private java.lang.String images_path = "/corel-10k";
 
-    static private final BigDecimal SUCCESS = new BigDecimal(1);
-    static private final BigDecimal ERROR = new BigDecimal(0);
+    static private final BigDecimal SUCCESS = new BigDecimal(0);
+    static private final BigDecimal ERROR = new BigDecimal(1);
 
     static private final int CREATE = 11;
     static private final int ALTER = 12;
@@ -120,7 +120,7 @@ public class Index {
     public static java.math.BigDecimal ODCIIndexStart(oracle.ODCI.ODCIIndexCtx sctx, oracle.ODCI.ODCIIndexInfo ia,
                                      oracle.ODCI.ODCIPredInfo pi, oracle.ODCI.ODCIQueryInfo qi, java.math.BigDecimal strt,
                                      java.math.BigDecimal stop, java.lang.String image_path , oracle.ODCI.ODCIEnv env)  {
-
+	Utils.print_log("OCDI start paulo ");
         try {
             java.util.Map<String, String> params_map = new HashMap<String, String>();
             params_map.put("img", image_path);
@@ -162,7 +162,9 @@ public class Index {
     }
 
     public static java.math.BigDecimal ODCIIndexFetch(oracle.ODCI.ODCIIndexCtx self, java.math.BigDecimal nrows, oracle.ODCI.ODCIRidList rids, oracle.ODCI.ODCIEnv env) {
-        try{
+        Utils.print_log("Entering fetch");
+
+	    try{
             Integer ctxkey = (Integer) ContextManager.ctx.keySet().toArray()[0];
             LinkedList<Image_Sim> results = (LinkedList<Image_Sim>) ContextManager.getContext(ctxkey);
 

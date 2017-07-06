@@ -31,6 +31,7 @@ public class LireHttpRequester {
             URL url = new URL(request);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
+	    connection.setConnectTimeout(150000);
 
             connection.setUseCaches(false);
             connection.setDoOutput(true);
