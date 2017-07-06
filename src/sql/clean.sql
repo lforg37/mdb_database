@@ -6,4 +6,4 @@ DROP TABLE user_mmdb.IMAGES_TABLE;
 DROP USER user_mmdb CASCADE;
 
 COMMIT;
-/
+exit 0;

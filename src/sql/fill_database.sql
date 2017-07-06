@@ -48,3 +48,4 @@ BEGIN
   UTL_FILE.FCLOSE(V_FILE);
 END;
 /
+exit 0;

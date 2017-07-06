@@ -28,3 +28,4 @@ DROP INDEX Images_Table_Index;
 CREATE INDEX Images_Table_Index ON user_mmdb.IMAGES_TABLE(FILE_PATH)
 INDEXTYPE IS Image_index;
 /
+exit 0;

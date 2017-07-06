@@ -91,3 +91,4 @@ STATIC FUNCTION ODCIGetInterfaces
   END ODCIGetInterfaces;
 END;
 /
+exit 0;
