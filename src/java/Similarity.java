@@ -15,7 +15,14 @@ public class Similarity {
                                                   Index[] sctx, java.math.BigDecimal scanflg){
 
         try {
+		if (image1 == null || image2 == null) {
+			Utils.print_log("Mathieu a envoye des chaines nulles pour tout faire planter. Il nous a piege");
+			return null;
+		}
             java.util.Map<String, String> params_map = new HashMap<String, String>();
+		
+	    Utils.print_log("DUCON : "+image1+", "+image2);
+
             params_map.put("img", image1);
             params_map.put("indexed_img", image2);
             String response = requester.ask_request(COMPARE, params_map);
