@@ -33,6 +33,9 @@ start_db() {
 		alter system register;
 		exit 0
 	EOF
+
+	find /corel-10k -name *.jpg > /corel-10k/images.txt
+
 	until sqlplus /nolog @/scripts/sql/waitoracle.sql 
 	do
 		echo "DB not ready, waiting another 5 seconds"
