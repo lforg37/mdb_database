@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 
 public class Index {
 
-    //static private LireHttpRequester requester = new LireHttpRequester("http://huile-de-palme.ml:8080/");
     static private LireHttpRequester requester = new LireHttpRequester("http://lireserv:8080/");
     static private java.lang.String images_path = "/corel-10k";
 
