@@ -19,6 +19,8 @@ trap_db() {
 }
 
 start_db() {
+	find /corel-10k -name *.jpg > /corel-10k/images.txt
+
 	echo_yellow "Starting listener..."
 	monitor $listener_log listener &
 	lsnrctl start | while read line; do echo -e "lsnrctl: $line"; done
@@ -33,21 +35,23 @@ start_db() {
 		alter system register;
 		exit 0
 	EOF
-
-	find /corel-10k -name *.jpg > /corel-10k/images.txt
-
 	until sqlplus /nolog @/scripts/sql/waitoracle.sql 
 	do
 		echo "DB not ready, waiting another 5 seconds"
 		sleep 5;
 	done
 	
+	echo "CLEANING DB..."
 	sqlplus sys/oracle@oramdb as sysdba @/scripts/sql/clean.sql
+	echo "FILLING DB..."
 	sqlplus sys/oracle@oramdb as sysdba @/scripts/sql/fill_database.sql
 	
+	echo "LOADING JAVA CLASSES"
 	$ORACLE_HOME/bin/loadjava -user user_mmdb/user_mmdb@oramdb -verbose -force -resolve /app/java/build/*.class
 
+	echo "Creating index structs..."
 	sqlplus sys/oracle@oramdb as sysdba @/scripts/sql/mm_index.sql
+	echo "Creating similarity op..."
 	sqlplus sys/oracle@oramdb as sysdba @/scripts/sql/similarity_operator.sql
 
 	while read line; do echo -e "sqlplus: $line"; done
