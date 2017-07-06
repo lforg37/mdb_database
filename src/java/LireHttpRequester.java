@@ -17,7 +17,6 @@ public class LireHttpRequester {
     static private final int INSERT = 13;
     static private final int UPDATE = 14;
     static private final int SIM = 15;
-    static private final int COMPARE = 16;
 
     private java.lang.String server_address;
 
@@ -32,6 +31,7 @@ public class LireHttpRequester {
             URL url = new URL(request);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
+	    connection.setConnectTimeout(150000);
 
             connection.setUseCaches(false);
             connection.setDoOutput(true);
@@ -52,6 +52,7 @@ public class LireHttpRequester {
             return response.toString();
         }
         catch(Exception e){
+            Utils.print_log("excpetion !!");
             Utils.print_log(e.getMessage());
             return "error";
         }
@@ -77,9 +78,6 @@ public class LireHttpRequester {
                 break;
             case SIM:
                 request = server_address + "search?";
-                break;
-            case COMPARE:
-                request = server_address + "compare?";
                 break;
             default:
                 return "error";

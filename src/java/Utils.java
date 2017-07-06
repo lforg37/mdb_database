@@ -29,7 +29,7 @@ public class Utils {
 
     public static LinkedList<Image_Sim> parse_results(java.lang.String results){
 
-        LinkedList<Image_Sim> parsed_results = new LinkedList<>();
+        LinkedList<Image_Sim> parsed_results = new LinkedList<Image_Sim>();
         java.lang.String[] pairs = results.split("\n");
 
         for(java.lang.String pair : pairs){
@@ -42,11 +42,10 @@ public class Utils {
 
     public static HashMap<java.lang.String, java.lang.String> request_id(){ //to be implemented
 
-        HashMap<java.lang.String, java.lang.String> filename_id = new HashMap<>();
+        HashMap<java.lang.String, java.lang.String> filename_id = new HashMap<java.lang.String, java.lang.String>();
         try {
             Utils.print_log("Getting filename and id with sql request");
-            Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@huile-de-palme.ml:1521", "user_mmdb",
-                    "user_mmdb");
+            Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521", "user_mmdb", "user_mmdb");
             String query = "SELECT ROWID, IMAGE_PATH FROM IMAGES_TABLE";
 
             Statement request = connection.createStatement();

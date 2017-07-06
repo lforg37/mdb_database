@@ -8,25 +8,13 @@ import java.util.HashMap;
 
 public class Similarity {
 
-    static private LireHttpRequester requester = new LireHttpRequester("http://lireserv:8080/");
-    static private final int COMPARE = 16;
-
     public static java.math.BigDecimal similarity(java.lang.String image1, java.lang.String image2, oracle.ODCI.ODCIIndexCtx ctx,
                                                   Index[] sctx, java.math.BigDecimal scanflg){
 
         try {
-            java.util.Map<String, String> params_map = new HashMap<String, String>();
-            params_map.put("img", image1);
-            params_map.put("indexed_img", image2);
-            String response = requester.ask_request(COMPARE, params_map);
-
-            if (response.equals("error")) {
-                Utils.print_log("error while requesting compare, returning null.");
-                return null;
-            }
-
-            //Utils.print_log(response);
-            return new java.math.BigDecimal(Double.parseDouble(response));
+            Integer ctxkey = (Integer) ContextManager.ctx.keySet().toArray()[0];
+            HashMap<String, java.math.BigDecimal> results = (HashMap<String, java.math.BigDecimal>) ContextManager.getContext(ctxkey);
+            return results.get(image2);
         }
         catch(Exception e){
             Utils.print_log(e.getMessage());
@@ -35,3 +23,6 @@ public class Similarity {
         }
     }
 }
+
+
+
