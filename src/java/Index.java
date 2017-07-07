@@ -24,8 +24,14 @@ public class Index {
     static private final int UPDATE = 14;
     static private final int SIM = 15;
 
-    public Index(){
+    private Integer _scanctx = -3;
+
+    public Index(Integer sctx) 
+    {
+	_scanctx = sctx;
     }
+
+    public Index() {}
 
     public static java.math.BigDecimal ODCIIndexCreate(oracle.ODCI.ODCIIndexInfo info, java.lang.String params, oracle.ODCI.ODCIEnv env){
 
@@ -116,7 +122,7 @@ public class Index {
      * @param env
      * @return
      */
-    public static java.math.BigDecimal ODCIIndexStart(oracle.ODCI.ODCIIndexCtx sctx, oracle.ODCI.ODCIIndexInfo ia,
+    public static java.math.BigDecimal ODCIIndexStart(Index[] sctx, oracle.ODCI.ODCIIndexInfo ia,
                                      oracle.ODCI.ODCIPredInfo pi, oracle.ODCI.ODCIQueryInfo qi, java.math.BigDecimal strt,
                                      java.math.BigDecimal stop, java.lang.String image_path , oracle.ODCI.ODCIEnv env)  {
 	Utils.print_log("OCDI start paulo ");
@@ -150,21 +156,22 @@ public class Index {
                 parsed_results.subList(0, end_index);
             }
 
-            ContextManager.setContext(parsed_results);
+            Integer key = ContextManager.setContext(parsed_results);
+	    sctx[0] = new Index(key);
         }
         catch(Exception e){
-            Utils.print_log(e.getMessage());
+            Utils.print_log("Exception in start : "+e.getMessage());
             return ERROR;
         }
 
         return SUCCESS;
     }
 
-    public static java.math.BigDecimal ODCIIndexFetch(oracle.ODCI.ODCIIndexCtx self, java.math.BigDecimal nrows, oracle.ODCI.ODCIRidList rids, oracle.ODCI.ODCIEnv env) {
+    public java.math.BigDecimal ODCIIndexFetch(java.math.BigDecimal nrows, oracle.ODCI.ODCIRidList rids, oracle.ODCI.ODCIEnv env) {
         Utils.print_log("Entering fetch");
 
 	    try{
-            Integer ctxkey = (Integer) ContextManager.ctx.keySet().toArray()[0];
+            Integer ctxkey = _scanctx;
             LinkedList<Image_Sim> results = (LinkedList<Image_Sim>) ContextManager.getContext(ctxkey);
 
             HashMap<java.lang.String, java.lang.String> filename_id = Utils.request_id();
@@ -185,7 +192,7 @@ public class Index {
         return SUCCESS;
     }
 
-    public static java.math.BigDecimal ODCIIndexClose(oracle.ODCI.ODCIIndexCtx self, oracle.ODCI.ODCIEnv env) {
+    public java.math.BigDecimal ODCIIndexClose(oracle.ODCI.ODCIEnv env) {
         Utils.print_log("Index closed successfully");
         return SUCCESS;
     }

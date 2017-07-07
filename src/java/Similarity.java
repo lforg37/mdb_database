@@ -21,7 +21,7 @@ public class Similarity {
 		}
             java.util.Map<String, String> params_map = new HashMap<String, String>();
 		
-	    Utils.print_log("DUCON : "+image1+", "+image2);
+	    Utils.print_log("Mathieu : "+image1+", "+image2);
 
             params_map.put("img", image1);
             params_map.put("indexed_img", image2);
