@@ -23,8 +23,8 @@ public class Similarity {
 		
 	    Utils.print_log("Mathieu : "+image1+", "+image2);
 
-            params_map.put("img", image1);
-            params_map.put("indexed_img", image2);
+            params_map.put("img", image2);
+            params_map.put("indexed_img", image1);
             String response = requester.ask_request(COMPARE, params_map);
 
             if (response.equals("error")) {
@@ -42,6 +42,3 @@ public class Similarity {
         }
     }
 }
-
-
-
