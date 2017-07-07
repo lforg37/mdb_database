@@ -5,7 +5,6 @@
 
 import oracle.CartridgeServices.ContextManager;
 
-import java.awt.*;
 import java.util.*;
 import java.math.BigDecimal;
 import oracle.jdbc.OracleTypes;
@@ -145,7 +144,7 @@ public class Index implements CustomDatum, CustomDatumFactory {
 	public static java.math.BigDecimal ODCIIndexStart(Index[] sctx, oracle.ODCI.ODCIIndexInfo ia,
 			oracle.ODCI.ODCIPredInfo pi, oracle.ODCI.ODCIQueryInfo qi, java.math.BigDecimal strt,
 			java.math.BigDecimal stop, java.lang.String image_path , oracle.ODCI.ODCIEnv env)  {
-		Utils.print_log("OCDI start paulo ");
+		Utils.print_log("OCDI (start, stop) :  " + strt + ", " + stop);
 		try {
 			java.util.Map<String, String> params_map = new HashMap<String, String>();
 			params_map.put("img", image_path);
@@ -158,24 +157,25 @@ public class Index implements CustomDatum, CustomDatumFactory {
 
 			Utils.print_log(response);
 			Utils.print_log("Images retrieved successfully");
-			LinkedList<Image_Sim> parsed_results = Utils.parse_results(response);
+			ArrayList<Image_Sim> parsed_results = Utils.parse_results(response);
+			Utils.print_log("size : "+parsed_results.size());
 
+			int startidx = 0;
+			int i = 0;
 			if(strt != null){
-				ListIterator<Image_Sim> it = parsed_results.listIterator();
-				while(it.hasNext() && it.next().sim.compareTo(strt)==-1){
-					it.remove();
-				}
+				for (; i < parsed_results.size() && parsed_results.get(i).sim.compareTo(strt) == -1 ; i++) {}
+			       startidx = i;	
 			}
 
-			if(stop != null){
-				ListIterator<Image_Sim> it = parsed_results.listIterator();
-				int end_index = 0;
-				while(it.hasNext() && it.next().sim.compareTo(stop)==-1){
-					end_index++;
-				}
-				parsed_results.subList(0, end_index);
+			int stopidx = parsed_results.size();
+			if (stop != null) {
+				for (; i < parsed_results.size() && parsed_results.get(i).sim.compareTo(stop) == -1 ; i++) {}
+				stopidx = i;
 			}
 
+			Utils.print_log("Blabla :"+ startidx + ", " + stopidx);
+
+			parsed_results = new ArrayList<Image_Sim>(parsed_results.subList(startidx, stopidx));	
 			Integer key = ContextManager.setContext(parsed_results);
 			sctx[0] = new Index();
 			sctx[0].setContextKey(key);
@@ -200,25 +200,35 @@ public class Index implements CustomDatum, CustomDatumFactory {
 		return keystorage.toDatum(c, sqlname);
 	}
 
-	public java.math.BigDecimal ODCIIndexFetch(java.math.BigDecimal nrows, oracle.ODCI.ODCIRidList rids, oracle.ODCI.ODCIEnv env) {
+	public java.math.BigDecimal ODCIIndexFetch(java.math.BigDecimal nrows, oracle.ODCI.ODCIRidList[] rids, oracle.ODCI.ODCIEnv env) {
 		Utils.print_log("Entering fetch");
-
 		try{
+			int n_rows;
+			if (nrows == null){
+				n_rows = 10;
+			} else {
+				n_rows = nrows.intValue();
+			}
 			Integer ctxkey = getContextKey();
-			LinkedList<Image_Sim> results = (LinkedList<Image_Sim>) ContextManager.getContext(ctxkey);
+			ArrayList<Image_Sim> results = (ArrayList<Image_Sim>) ContextManager.getContext(ctxkey);
 
 			HashMap<java.lang.String, java.lang.String> filename_id = Utils.request_id();
-			String[] rowids = new String[nrows.intValue() + 1];
 
-			for(int i = 0; i< nrows.intValue(); i++){
+			if (results.size() < n_rows) {
+				n_rows = results.size();
+			}	
+
+			String[] rowids = new String[n_rows + 1];
+			
+			for(int i = 0; i< n_rows; i++){
 				rowids[i] = filename_id.get(results.get(i).image);
 			}
-
-			rids.setArray(rowids);
+			rowids[n_rows] = null;
+			rids[0] = new oracle.ODCI.ODCIRidList(rowids);
 
 		}
 		catch(Exception e){
-			Utils.print_log(e.getMessage());
+			Utils.print_log("Gland sec : "+e.getClass().getName());
 			return ERROR;
 		}
 

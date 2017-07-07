@@ -67,11 +67,11 @@ NAME 'Index.ODCIIndexStart(Index[], oracle.ODCI.ODCIIndexInfo, oracle.ODCI.ODCIP
 
 MEMBER FUNCTION  ODCIIndexFetch(
 nrows NUMBER,
-rids ODCIRidList,
+rids OUT ODCIRidList,
 env ODCIEnv)
 RETURN NUMBER
 AS LANGUAGE JAVA 
-NAME 'Index.ODCIIndexFetch(java.math.BigDecimal, oracle.ODCI.ODCIRidList, oracle.ODCI.ODCIEnv) return java.math.BigDecimal',
+NAME 'Index.ODCIIndexFetch(java.math.BigDecimal, oracle.ODCI.ODCIRidList[], oracle.ODCI.ODCIEnv) return java.math.BigDecimal',
 
 MEMBER FUNCTION  ODCIIndexClose(
 env ODCIEnv)
