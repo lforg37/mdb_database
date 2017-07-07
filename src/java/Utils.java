@@ -46,7 +46,7 @@ public class Utils {
         try {
             Utils.print_log("Getting filename and id with sql request");
             Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/orcl", "user_mmdb", "user_mmdb");
-            String query = "SELECT ROWID, FILE_PATH FROM IMAGES_TABLE";
+            String query = "SELECT ROWID, FILE_PATH FROM SYS.IMAGES_TABLE";
 
             Statement request = connection.createStatement();
 
