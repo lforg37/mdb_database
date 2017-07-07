@@ -19,6 +19,11 @@ trap_db() {
 }
 
 start_db() {
+	until touch /corel-10k/images.txt
+	do
+		echo "Waiting for access rights on /corel-10k"
+		sleep 4
+	done
 	find /corel-10k -name *.jpg > /corel-10k/images.txt
 
 	echo_yellow "Starting listener..."
