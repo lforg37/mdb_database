@@ -53,7 +53,6 @@ public class Index implements CustomDatum, CustomDatumFactory {
 	}
 
 	public static java.math.BigDecimal ODCIIndexCreate(oracle.ODCI.ODCIIndexInfo info, java.lang.String params, oracle.ODCI.ODCIEnv env){
-
 		try {
 			java.util.Map<String, String> params_map = new HashMap<String, String>();
 			params_map.put("dir", images_path);
@@ -183,18 +182,22 @@ public class Index implements CustomDatum, CustomDatumFactory {
 			}
 
 			parsed_results = new ArrayList<Image_Sim>(parsed_results.subList(startidx, stopidx));
+			Utils.print_log("Step1");
 			Integer rowIdKey = (Integer) ContextManager.ctx.keySet().toArray()[0];
+			Utils.print_log("Step2");
 			HashMap<String, String> filename_id = (HashMap<String, String>) ContextManager.getContext(rowIdKey);
-
+			Utils.print_log("Step3");
 			Results results = new Results(parsed_results, filename_id);
-
+			Utils.print_log("Step4");
+			
 			Integer resultsKey = ContextManager.setContext(results);
+			Utils.print_log("Step1");
 
 			sctx[0] = new Index();
 			sctx[0].setResultsKey(resultsKey);
 		}
 		catch(Exception e){
-			Utils.print_log("Exception in start : "+e.getMessage());
+		    Utils.print_log("Exception in start : "+e.getClass().getName());
 			return ERROR;
 		}
 

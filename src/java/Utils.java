@@ -50,22 +50,14 @@ public class Utils {
             String query = "SELECT ROWID, FILE_PATH FROM SYS.IMAGES_TABLE";
 
             Statement request = connection.createStatement();
-            Utils.print_log("Blabla");
 
             ResultSet rs = request.executeQuery(query);
-            Utils.print_log("Blibli");
-	    int i = 0;
             while(rs.next()) {
-		Utils.print_log(Integer.toString(i));
-		i = i+1;
                 filename_id.put(rs.getString("FILE_PATH"), rs.getString("ROWID"));
             }
-            Utils.print_log("Blublu");
 
             request.close();
-            Utils.print_log("Blaablaa");
             connection.close();
-            Utils.print_log("Bliiblii");
         } catch (Exception e) {
 	    Utils.print_log("Request id");
             Utils.print_log(e.getMessage());
