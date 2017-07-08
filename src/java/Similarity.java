@@ -37,8 +37,9 @@ public class Similarity {
             }
 
             else{
-		        Integer resultsKey = sctx[0].getResultsKey();
-		        Results results = (Results) ContextManager.getContext(resultsKey);
+		    Utils.print_log("in similarity else");
+		    Integer resultsKey = (Integer) ContextManager.ctx.keySet().toArray()[0];
+		    Results results = (Results) ContextManager.getContext(resultsKey);
 
 			Utils.print_log("Blabla : bloubloubloububu");
 
