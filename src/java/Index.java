@@ -176,7 +176,6 @@ public class Index implements CustomDatum, CustomDatumFactory {
 
 			parsed_results = new ArrayList<Image_Sim>(parsed_results.subList(startidx, stopidx));
 			HashMap<java.lang.String, java.lang.String> filename_id = Utils.request_id();
-
 			Results results = new Results(parsed_results, filename_id);
 
 			Integer resultsKey = ContextManager.setContext(results);

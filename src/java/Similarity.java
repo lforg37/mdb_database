@@ -14,13 +14,12 @@ public class Similarity {
     public static java.math.BigDecimal similarity(java.lang.String image1, java.lang.String image2, oracle.ODCI.ODCIIndexCtx ctx,
                                                   Index[] sctx, java.math.BigDecimal scanflg){
 
-        try {
+	 try {
 		if (image1 == null || image2 == null) {
 			return null;
 		}
 
             if(sctx == null) {
-
                 java.util.Map<String, String> params_map = new HashMap<String, String>();
 
                 params_map.put("img", image2);
@@ -37,13 +36,9 @@ public class Similarity {
             }
 
             else{
-		    Utils.print_log("in similarity else");
 		    Integer resultsKey = (Integer) ContextManager.ctx.keySet().toArray()[0];
 		    Results results = (Results) ContextManager.getContext(resultsKey);
-
-			Utils.print_log("Blabla : bloubloubloububu");
-
-		        return results.getSimilarity(image1);
+		    return results.getSimilarity(image1);
             }
         }
         catch(Exception e){
