@@ -45,16 +45,19 @@ public class Utils {
         HashMap<java.lang.String, java.lang.String> filename_id = new HashMap<java.lang.String, java.lang.String>();
         try {
             Utils.print_log("Getting filename and id with sql request");
-            Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/orcl", "SYS", "oracle");
+            Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521/orcl", "user_mmdb", "user_mmdb");
             Utils.print_log("Connection created");
-            String query = "SELECT ROWID, FILE_PATH FROM IMAGES_TABLE";
+            String query = "SELECT ROWID, FILE_PATH FROM SYS.IMAGES_TABLE";
 
             Statement request = connection.createStatement();
             Utils.print_log("Blabla");
 
             ResultSet rs = request.executeQuery(query);
             Utils.print_log("Blibli");
+	    int i = 0;
             while(rs.next()) {
+		Utils.print_log(Integer.toString(i));
+		i = i+1;
                 filename_id.put(rs.getString("FILE_PATH"), rs.getString("ROWID"));
             }
             Utils.print_log("Blublu");
