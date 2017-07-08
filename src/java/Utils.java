@@ -58,6 +58,7 @@ public class Utils {
             request.close();
             connection.close();
         } catch (Exception e) {
+	    Utils.print_log("Request id");
             Utils.print_log(e.getMessage());
         }
         return filename_id;
