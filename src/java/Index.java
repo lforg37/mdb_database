@@ -144,6 +144,7 @@ public class Index implements CustomDatum, CustomDatumFactory {
 	public static java.math.BigDecimal ODCIIndexStart(Index[] sctx, oracle.ODCI.ODCIIndexInfo ia,
 			oracle.ODCI.ODCIPredInfo pi, oracle.ODCI.ODCIQueryInfo qi, java.math.BigDecimal strt,
 			java.math.BigDecimal stop, java.lang.String image_path , oracle.ODCI.ODCIEnv env)  {
+
 		Utils.print_log("OCDI (start, stop) :  " + strt + ", " + stop);
 		try {
 			java.util.Map<String, String> params_map = new HashMap<String, String>();
@@ -173,12 +174,15 @@ public class Index implements CustomDatum, CustomDatumFactory {
 				stopidx = i;
 			}
 
-			Utils.print_log("Blabla :"+ startidx + ", " + stopidx);
+			parsed_results = new ArrayList<Image_Sim>(parsed_results.subList(startidx, stopidx));
+			HashMap<java.lang.String, java.lang.String> filename_id = Utils.request_id();
 
-			parsed_results = new ArrayList<Image_Sim>(parsed_results.subList(startidx, stopidx));	
-			Integer key = ContextManager.setContext(parsed_results);
+			Integer simKey = ContextManager.setContext(parsed_results);
+			Integer rowIdKey = ContextManager.setContext(filename_id);
+
 			sctx[0] = new Index();
-			sctx[0].setContextKey(key);
+			sctx[0].setSimKey(simKey);
+			sctx[0].setRowIdKey(rowIdKey);
 		}
 		catch(Exception e){
 			Utils.print_log("Exception in start : "+e.getMessage());
@@ -186,18 +190,6 @@ public class Index implements CustomDatum, CustomDatumFactory {
 		}
 
 		return SUCCESS;
-	}
-
-	public void setContextKey(Integer context) throws SQLException {
-		keystorage.setAttribute(0, context);
-	}
-
-	public Integer getContextKey() throws SQLException {
-		return (Integer) keystorage.getAttribute(0);
-	}
-
-	public Datum toDatum(oracle.jdbc.driver.OracleConnection c) throws SQLException {
-		return keystorage.toDatum(c, sqlname);
 	}
 
 	public java.math.BigDecimal ODCIIndexFetch(java.math.BigDecimal nrows, oracle.ODCI.ODCIRidList[] rids, oracle.ODCI.ODCIEnv env) {
@@ -209,10 +201,12 @@ public class Index implements CustomDatum, CustomDatumFactory {
 			} else {
 				n_rows = nrows.intValue();
 			}
-			Integer ctxkey = getContextKey();
-			ArrayList<Image_Sim> results = (ArrayList<Image_Sim>) ContextManager.getContext(ctxkey);
+			Integer simKey = getSimKey();
+			ArrayList<Image_Sim> results = (ArrayList<Image_Sim>) ContextManager.getContext(simKey);
 
-			HashMap<java.lang.String, java.lang.String> filename_id = Utils.request_id();
+			Integer rowIdKey = getRowIdKey();
+			HashMap<java.lang.String, java.lang.String> filename_id =
+					(HashMap<java.lang.String, java.lang.String>) ContextManager.getContext(rowIdKey);
 
 			if (results.size() < n_rows) {
 				n_rows = results.size();
@@ -228,7 +222,6 @@ public class Index implements CustomDatum, CustomDatumFactory {
 
 		}
 		catch(Exception e){
-			Utils.print_log("Gland sec : "+e.getClass().getName());
 			return ERROR;
 		}
 
@@ -238,6 +231,27 @@ public class Index implements CustomDatum, CustomDatumFactory {
 	public java.math.BigDecimal ODCIIndexClose(oracle.ODCI.ODCIEnv env) {
 		Utils.print_log("Index closed successfully");
 		return SUCCESS;
+	}
+
+	public void setSimKey(Integer key) throws SQLException {
+		keystorage.setAttribute(0, key);
+	}
+
+	public void setRowIdKey(Integer key) throws SQLException {
+		keystorage.setAttribute(1, key);
+	}
+
+
+	public Integer getSimKey() throws SQLException {
+		return (Integer) keystorage.getAttribute(0);
+	}
+
+	public Integer getRowIdKey() throws SQLException {
+		return (Integer) keystorage.getAttribute(1);
+	}
+
+	public Datum toDatum(oracle.jdbc.driver.OracleConnection c) throws SQLException {
+		return keystorage.toDatum(c, sqlname);
 	}
 
 }
