@@ -19,7 +19,7 @@ trap_db() {
 }
 
 start_db() {
-	until test $( ls /corel-10k | wc -l ) -gt 5 & test -w /corel-10k 
+	until test $( ls /corel-10k | wc -l ) -gt 5 && test -w /corel-10k 
 	do
 		echo "Waiting for access rights on /corel-10k"
 		sleep 4

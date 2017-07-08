@@ -40,6 +40,8 @@ public class Similarity {
 		        Integer resultsKey = sctx[0].getResultsKey();
 		        Results results = (Results) ContextManager.getContext(resultsKey);
 
+			Utils.print_log("Blabla : bloubloubloububu");
+
 		        return results.getSimilarity(image1);
             }
         }
