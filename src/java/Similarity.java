@@ -36,7 +36,7 @@ public class Similarity {
             }
 
             else{
-		    Integer resultsKey = (Integer) ContextManager.ctx.keySet().toArray()[0];
+		    Integer resultsKey = (Integer) ContextManager.ctx.keySet().toArray()[1];
 		    Results results = (Results) ContextManager.getContext(resultsKey);
 		    return results.getSimilarity(image1);
             }
