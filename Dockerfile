@@ -10,7 +10,7 @@ COPY src /scripts
 RUN 	mkdir -p /app/java/build ;\
 	export PATH=$PATH:$ORACLE_HOME/bin/:$ORACLE_HOME/jdk/bin/ ;\
 	source /scripts/sh/utils.sh ;\
-	jl="`listjar $ORACLE_HOME/rdbms/jlib/`:$ORACLE_HOME/jdbc/lib/ojdbc5.jar" ;\
+	jl="`listjar $ORACLE_HOME/rdbms/jlib/`:$ORACLE_HOME/jdbc/lib/ojdbc5dms.jar" ;\
 	javac -cp $jl -d /app/java/build $(find ./scripts -name *.java) ; 
 
 

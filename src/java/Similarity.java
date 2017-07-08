@@ -21,7 +21,7 @@ public class Similarity {
 
             if(sctx == null) {
                 java.util.Map<String, String> params_map = new HashMap<String, String>();
-
+		Utils.print_log("Paul was here");
                 params_map.put("img", image2);
                 params_map.put("indexed_img", image1);
                 String response = requester.ask_request(COMPARE, params_map);
