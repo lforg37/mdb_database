@@ -53,24 +53,17 @@ public class Index implements CustomDatum, CustomDatumFactory {
 	}
 
 	public static java.math.BigDecimal ODCIIndexCreate(oracle.ODCI.ODCIIndexInfo info, java.lang.String params, oracle.ODCI.ODCIEnv env){
-		try {
-			java.util.Map<String, String> params_map = new HashMap<String, String>();
-			params_map.put("dir", images_path);
-			String response = requester.ask_request(CREATE, params_map);
 
-			if (response.equals("error")) {
-				Utils.print_log("error while creating the index");
-				return ERROR;
-			}
+		java.util.Map<String, String> params_map = new HashMap<String, String>();
+		params_map.put("dir", images_path);
+		String response = requester.ask_request(CREATE, params_map);
 
-			ContextManager.setContext(Utils.request_id());
-			Utils.print_log("Index created successfully");
-			Utils.print_log(response);
-		} 
-		catch(Exception e){
-			Utils.print_log("exception in create" + e.getMessage());
+		if(response.equals("error")){
+			Utils.print_log("error while creating the index");
 			return ERROR;
 		}
+		Utils.print_log("Index created successfully");
+		Utils.print_log(response);
 		return SUCCESS;
 
 	}
@@ -182,22 +175,16 @@ public class Index implements CustomDatum, CustomDatumFactory {
 			}
 
 			parsed_results = new ArrayList<Image_Sim>(parsed_results.subList(startidx, stopidx));
-			Utils.print_log("Step1");
-			Integer rowIdKey = (Integer) ContextManager.ctx.keySet().toArray()[0];
-			Utils.print_log("Step2");
-			HashMap<String, String> filename_id = (HashMap<String, String>) ContextManager.getContext(rowIdKey);
-			Utils.print_log("Step3");
+			HashMap<java.lang.String, java.lang.String> filename_id = Utils.request_id();
 			Results results = new Results(parsed_results, filename_id);
-			Utils.print_log("Step4");
-			
+
 			Integer resultsKey = ContextManager.setContext(results);
-			Utils.print_log("Step1");
 
 			sctx[0] = new Index();
 			sctx[0].setResultsKey(resultsKey);
 		}
 		catch(Exception e){
-		    Utils.print_log("Exception in start : "+e.getClass().getName());
+			Utils.print_log("Exception in start : "+e.getMessage());
 			return ERROR;
 		}
 
