@@ -16,24 +16,32 @@ public class Similarity {
 
         try {
 		if (image1 == null || image2 == null) {
-			Utils.print_log("Mathieu a envoye des chaines nulles pour tout faire planter. Il nous a piege");
 			return null;
 		}
-            java.util.Map<String, String> params_map = new HashMap<String, String>();
-		
-	    Utils.print_log("Mathieu : "+image1+", "+image2);
 
-            params_map.put("img", image2);
-            params_map.put("indexed_img", image1);
-            String response = requester.ask_request(COMPARE, params_map);
+            if(sctx == null) {
 
-            if (response.equals("error")) {
-                Utils.print_log("error while requesting compare, returning null.");
-                return null;
+                java.util.Map<String, String> params_map = new HashMap<String, String>();
+
+                params_map.put("img", image2);
+                params_map.put("indexed_img", image1);
+                String response = requester.ask_request(COMPARE, params_map);
+
+                if (response.equals("error")) {
+                    Utils.print_log("error while requesting compare, returning null.");
+                    return null;
+                }
+
+                //Utils.print_log(response);
+                return new java.math.BigDecimal(Double.parseDouble(response));
             }
 
-            //Utils.print_log(response);
-            return new java.math.BigDecimal(Double.parseDouble(response));
+            else{
+		        Integer resultsKey = sctx[0].getResultsKey();
+		        Results results = (Results) ContextManager.getContext(resultsKey);
+
+		        return results.getSimilarity(image1);
+            }
         }
         catch(Exception e){
             Utils.print_log(e.getMessage());

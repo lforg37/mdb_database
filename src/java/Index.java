@@ -177,12 +177,12 @@ public class Index implements CustomDatum, CustomDatumFactory {
 			parsed_results = new ArrayList<Image_Sim>(parsed_results.subList(startidx, stopidx));
 			HashMap<java.lang.String, java.lang.String> filename_id = Utils.request_id();
 
-			Integer simKey = ContextManager.setContext(parsed_results);
-			Integer rowIdKey = ContextManager.setContext(filename_id);
+			Results results = new Results(parsed_results, filename_id);
+
+			Integer resultsKey = ContextManager.setContext(results);
 
 			sctx[0] = new Index();
-			sctx[0].setSimKey(simKey);
-			sctx[0].setRowIdKey(rowIdKey);
+			sctx[0].setResultsKey(resultsKey);
 		}
 		catch(Exception e){
 			Utils.print_log("Exception in start : "+e.getMessage());
@@ -194,6 +194,7 @@ public class Index implements CustomDatum, CustomDatumFactory {
 
 	public java.math.BigDecimal ODCIIndexFetch(java.math.BigDecimal nrows, oracle.ODCI.ODCIRidList[] rids, oracle.ODCI.ODCIEnv env) {
 		Utils.print_log("Entering fetch");
+
 		try{
 			int n_rows;
 			if (nrows == null){
@@ -201,21 +202,21 @@ public class Index implements CustomDatum, CustomDatumFactory {
 			} else {
 				n_rows = nrows.intValue();
 			}
-			Integer simKey = getSimKey();
-			ArrayList<Image_Sim> results = (ArrayList<Image_Sim>) ContextManager.getContext(simKey);
 
-			Integer rowIdKey = getRowIdKey();
-			HashMap<java.lang.String, java.lang.String> filename_id =
-					(HashMap<java.lang.String, java.lang.String>) ContextManager.getContext(rowIdKey);
+			Integer resultsKey = getResultsKey();
+			Results results = (Results) ContextManager.getContext(resultsKey);
 
-			if (results.size() < n_rows) {
-				n_rows = results.size();
+			HashMap<java.lang.String, java.lang.String> filename_id = results.getFilename_id();
+			ArrayList<Image_Sim> sim_results = results.getSim_Results();
+
+			if (sim_results.size() < n_rows) {
+				n_rows = sim_results.size();
 			}	
 
 			String[] rowids = new String[n_rows + 1];
 			
 			for(int i = 0; i< n_rows; i++){
-				rowids[i] = filename_id.get(results.get(i).image);
+				rowids[i] = filename_id.get(sim_results.get(i).image);
 			}
 			rowids[n_rows] = null;
 			rids[0] = new oracle.ODCI.ODCIRidList(rowids);
@@ -233,22 +234,15 @@ public class Index implements CustomDatum, CustomDatumFactory {
 		return SUCCESS;
 	}
 
-	public void setSimKey(Integer key) throws SQLException {
+	public void setResultsKey(Integer key) throws SQLException {
 		keystorage.setAttribute(0, key);
 	}
 
-	public void setRowIdKey(Integer key) throws SQLException {
-		keystorage.setAttribute(1, key);
-	}
 
-
-	public Integer getSimKey() throws SQLException {
+	public Integer getResultsKey() throws SQLException {
 		return (Integer) keystorage.getAttribute(0);
 	}
 
-	public Integer getRowIdKey() throws SQLException {
-		return (Integer) keystorage.getAttribute(1);
-	}
 
 	public Datum toDatum(oracle.jdbc.driver.OracleConnection c) throws SQLException {
 		return keystorage.toDatum(c, sqlname);
