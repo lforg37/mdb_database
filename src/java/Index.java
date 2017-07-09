@@ -53,17 +53,23 @@ public class Index implements CustomDatum, CustomDatumFactory {
 	}
 
 	public static java.math.BigDecimal ODCIIndexCreate(oracle.ODCI.ODCIIndexInfo info, java.lang.String params, oracle.ODCI.ODCIEnv env){
+		
+		try{	
+			java.util.Map<String, String> params_map = new HashMap<String, String>();
+			params_map.put("dir", images_path);
+			String response = requester.ask_request(CREATE, params_map);
 
-		java.util.Map<String, String> params_map = new HashMap<String, String>();
-		params_map.put("dir", images_path);
-		String response = requester.ask_request(CREATE, params_map);
-
-		if(response.equals("error")){
-			Utils.print_log("error while creating the index");
+			if(response.equals("error")){
+				Utils.print_log("error while creating the index");
+				return ERROR;
+			}
+			Utils.print_log("Index created successfully");
+			Utils.print_log(response);
+		} catch(Exception e)
+		{
+			Utils.print_log("error while creating index : " + e.getMessage());
 			return ERROR;
-		}
-		Utils.print_log("Index created successfully");
-		Utils.print_log(response);
+		}	
 		return SUCCESS;
 
 	}
