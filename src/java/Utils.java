@@ -45,7 +45,7 @@ public class Utils {
         HashMap<java.lang.String, java.lang.String> filename_id = new HashMap<java.lang.String, java.lang.String>();
         try {
             Utils.print_log("Getting filename and id with sql request");
-            Connection connection = DriverManager.getConnection("jdbc:oracle:thin@ORAMDB", "user_mmdb", "user_mmdb");
+            Connection connection = DriverManager.getConnection("jdbc:oracle:thin@database:1521/orcl", "user_mmdb", "user_mmdb");
 	    connection.setAutoCommit(false);
             Utils.print_log("Connection created");
             String query = "SELECT ROWID, FILE_PATH FROM SYS.IMAGES_TABLE";

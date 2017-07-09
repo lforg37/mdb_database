@@ -4,6 +4,7 @@ ENV ORACLE_HOME="/opt/oracle/app/product/11.2.0/dbhome_1/"
 ENV ORACLE_SID="orcl"
 
 COPY tnsnames.ora /opt/oracle/app/product/11.2.0/dbhome_1/network/admin/
+COPY sqlnet.ora /opt/oracle/app/product/11.2.0/dbhome_1/network/admin/
 
 COPY src /scripts
 
