@@ -40,7 +40,7 @@ public class Utils {
         return parsed_results;
     }
 
-    public static HashMap<java.lang.String, java.lang.String> request_id(){ //to be implemented
+    public static HashMap<java.lang.String, java.lang.String> request_id(){
 
         HashMap<java.lang.String, java.lang.String> filename_id = new HashMap<java.lang.String, java.lang.String>();
         try {
@@ -52,16 +52,16 @@ public class Utils {
 
 	    
             Statement request = connection.createStatement();
-	    request.setFetchSize(100);
-	    
+
             ResultSet rs = request.executeQuery(query);
             while(rs.next()) {
                 filename_id.put(rs.getString("FILE_PATH"), rs.getString("ROWID"));
             }
+
 	    request.close();
             connection.close();	    
 
-           
+
         } catch (Exception e) {
 	    Utils.print_log("Request id");
             Utils.print_log(e.getMessage());
